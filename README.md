@@ -6,6 +6,8 @@ Includes 3 stock types (winner = type0, 'good' loser = type1, 'bad' loser = type
 Participants can buy information on stocks in P1 and P2 (recieving current price, purchase price, and up/down price movement of asset since previous phase).
 Participants can choose to sell stocks in P1, P2, or P3. 
 
+Includes checks and feasible parameter ranges for required conditions necessary for the theoretical optimal bayesian strategy to hold.
+
 Key parameter choices: 
   • scenarios
   • gs
