@@ -16,13 +16,13 @@ n_stocks = 4
 n_scenarios = len(scenarios)
 p_scenarios = 1 / n_scenarios   #0.5
 
-gs = 0.8
-bs = 0.2
+gs = 0.8 #likely state
+bs = 0.2 #unlikely state
 
 start_price_mean = 100
 start_price_random = random.randint(90, 110) # not relevant for E(V) calculations
 
-buy_info = 2.75 # price of buying info (feasible range important for E_Payoff calc & condition 1, find in requirement conditions section)
+buy_info = 2.5 # price of buying info (feasible range important for E_Payoff calc & condition 1, find in requirement conditions section)
 
 
 
@@ -31,8 +31,8 @@ buy_info = 2.75 # price of buying info (feasible range important for E_Payoff ca
 p_paths = [gs*gs, gs*bs, bs*gs, bs*bs]   # [0.64, 0.16, 0.16, 0.04]
 
 price_paths_type0 = [
-    [15, 20, 70],     #GG
-    [15, 20, 25],     #GB
+    [15, 25, 70],     #GG
+    [15, 25, 25],     #GB
     [15, -1, 25],     #BG
     [15, -1, -10],    #BB
 ]
@@ -45,9 +45,9 @@ price_paths_type1 = [
 ]
 
 price_paths_type2 = [
-    [-10, -20, -70],    
-    [-10, -20, -30],     
-    [-10, -1, -30],       
+    [-10, -25, -70],    
+    [-10, -25, -35],     
+    [-10, -1, -35],       
     [-10, -1, 10],       
 ]
 
@@ -695,7 +695,7 @@ print(f"optimal E[CG | P1&P2 info] = {optimal_E_CG_p1p2info:.3f}")
 E_Payoff_noinfo = optimal_E_CG_noinfo
 E_Payoff_p1info = optimal_E_CG_p1info - buy_info * n_stocks
 E_Payoff_p2info = optimal_E_CG_p2info - buy_info * n_stocks
-E_Payoff_p1p2info = optimal_E_CG_p1p2info - buy_info * (1.5 * n_stocks) # assumes each scenario has 50% type0 stock
+E_Payoff_p1p2info = optimal_E_CG_p1p2info - buy_info * (1.5 * n_stocks) # assumes each scenario has 50% type0 stock, hence buy info on all stocks P1 and only 'losers' P2
 
 
 ranked_optimal_strategies_EP = sorted(
@@ -720,14 +720,14 @@ print(ranked_optimal_strategies_EP)
 
 # buy_info range calculation (for E_Payoff calc & condition 1)
 
-buy_info_lb = (optimal_E_CG_p1p2info - optimal_E_CG_p1info) / ((1.5* n_stocks) - n_stocks)
+buy_info_lb = (optimal_E_CG_p1p2info - optimal_E_CG_p1info) / ((1.5* n_stocks) - n_stocks) 
 buy_info_ub = (optimal_E_CG_p2info - optimal_E_CG_noinfo) / n_stocks
 buy_info_in_range = buy_info_lb < buy_info < buy_info_ub
 
 print(f' info buy lb: {buy_info_lb:.3f}')
 print(f' info buy ub: {buy_info_ub:.3f}')
 print(f' buy info cost: {buy_info:.3f}')
-print(f' buy info in range? {buy_info_in_range}')
+print(f' buy info in range? {buy_info_in_range}') # necessary, not sufficient for Condition1 to hold
 
 
 condition1 = (E_Payoff_p1info > E_Payoff_noinfo) and (E_Payoff_p1info > E_Payoff_p2info) and (E_Payoff_p1info > E_Payoff_p1p2info)
